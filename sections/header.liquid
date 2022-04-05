@@ -346,21 +346,28 @@
       <h1 class="header__heading">
     {%- endif -%}
         <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
-          {%- if section.settings.logo != blank -%}
-            {%- assign image_size_2x = section.settings.logo_width | times: 2 | at_most: 5760 -%}
-            <img srcset="{{ section.settings.logo | image_url: width: section.settings.logo_width }} 1x, {{ section.settings.logo | image_url: width: image_size_2x }} 2x"
-              src="{{ section.settings.logo | image_url: width: section.settings.logo_width }}"
-              loading="lazy"
-              class="header__heading-logo"
-              width="{{ section.settings.logo.width }}"
-              height="{{ section.settings.logo.height }}"
-              alt="{{ section.settings.logo.alt | default: shop.name | escape }}"
-            >
-          {%- else -%}
-            <span class="h2">{{ shop.name }}</span>
-          {%- endif -%}
+          {%- if section.settings.align_logo != blank -%}
+          {% capture image_size %}{{ section.settings.logo_max_width | escape }}{% endcapture %}
+          <img src="{{ 'logo.svg' | asset_url }}"
+          alt="{{ shop.name }}"
+          style="max-width: {{ image_size }}px;">
+
+
+          {% comment %}{%- if section.settings.logo != blank -%}{% endcomment %}
+          {% comment %}{%- assign image_size_2x = section.settings.logo_width | times: 2 | at_most: 5760 -%}{% endcomment %}
+          {% comment %}<img srcset="{{ section.settings.logo | image_url: width: section.settings.logo_width }} 1x, {{ section.settings.logo | image_url: width: image_size_2x }} 2x"{% endcomment %}
+          {% comment %}src="{{ section.settings.logo | image_url: width: section.settings.logo_width }}"{% endcomment %}
+          {% comment %}loading="lazy"{% endcomment %}
+          {% comment %}class="header__heading-logo"{% endcomment %}
+          {% comment %}width="{{ section.settings.logo.width }}"{% endcomment %}
+          {% comment %}height="{{ section.settings.logo.height }}"{% endcomment %}
+          {% comment %}alt="{{ section.settings.logo.alt | default: shop.name | escape }}"{% endcomment %}
+          {% comment %}>{% endcomment %}
+          {% comment %}{%- else -%}{% endcomment %}
+          {% comment %}<span class="h2">{{ shop.name }}</span>{% endcomment %}
+          {% comment %}{%- endif -%}{% endcomment %}
         </a>
-    {%- if request.page_type == 'index' -%}
+        {%- if request.page_type == 'index' -%}
       </h1>
     {%- endif -%}
 
@@ -377,23 +384,29 @@
                         <span {%- if link.child_active %} class="header__active-menu-item"{% endif %}>{{ link.title | escape }}</span>
                         {% render 'icon-caret' %}
                       </summary>
-                      <ul id="HeaderMenu-MenuList-{{ forloop.index }}" class="header__submenu list-menu list-menu--disclosure gradient caption-large motion-reduce global-settings-popup" role="list" tabindex="-1">
+                      <ul id="HeaderMenu-MenuList-{{ forloop.index }}"
+                          class="header__submenu list-menu list-menu--disclosure gradient caption-large motion-reduce global-settings-popup"
+                          role="list" tabindex="-1">
                         {%- for childlink in link.links -%}
                           <li>
                             {%- if childlink.links == blank -%}
-                              <a href="{{ childlink.url }}" class="header__menu-item list-menu__item link link--text focus-inset caption-large{% if childlink.current %} list-menu__item--active{% endif %}"{% if childlink.current %} aria-current="page"{% endif %}>
+                              <a href="{{ childlink.url }}"
+                                 class="header__menu-item list-menu__item link link--text focus-inset caption-large{% if childlink.current %} list-menu__item--active{% endif %}"{% if childlink.current %} aria-current="page"{% endif %}>
                                 {{ childlink.title | escape }}
                               </a>
                             {%- else -%}
                               <details id="Details-HeaderSubMenu-{{ forloop.index }}">
-                                <summary class="header__menu-item link link--text list-menu__item focus-inset caption-large">
+                                <summary
+                                        class="header__menu-item link link--text list-menu__item focus-inset caption-large">
                                   <span>{{ childlink.title | escape }}</span>
                                   {% render 'icon-caret' %}
                                 </summary>
-                                <ul id="HeaderMenu-SubMenuList-{{ forloop.index }}" class="header__submenu list-menu motion-reduce">
+                                <ul id="HeaderMenu-SubMenuList-{{ forloop.index }}"
+                                    class="header__submenu list-menu motion-reduce">
                                   {%- for grandchildlink in childlink.links -%}
                                     <li>
-                                      <a href="{{ grandchildlink.url }}" class="header__menu-item list-menu__item link link--text focus-inset caption-large{% if grandchildlink.current %} list-menu__item--active{% endif %}"{% if grandchildlink.current %} aria-current="page"{% endif %}>
+                                      <a href="{{ grandchildlink.url }}"
+                                         class="header__menu-item list-menu__item link link--text focus-inset caption-large{% if grandchildlink.current %} list-menu__item--active{% endif %}"{% if grandchildlink.current %} aria-current="page"{% endif %}>
                                         {{ grandchildlink.title | escape }}
                                       </a>
                                     </li>
@@ -407,7 +420,8 @@
                     </details>
                   </header-menu>
                 {%- else -%}
-                  <a href="{{ link.url }}" class="header__menu-item header__menu-item list-menu__item link link--text focus-inset"{% if link.current %} aria-current="page"{% endif %}>
+                  <a href="{{ link.url }}"
+                     class="header__menu-item header__menu-item list-menu__item link link--text focus-inset"{% if link.current %} aria-current="page"{% endif %}>
                     <span {%- if link.current %} class="header__active-menu-item"{% endif %}>{{ link.title | escape }}</span>
                   </a>
                 {%- endif -%}
@@ -427,18 +441,22 @@
                         <span {%- if link.child_active %} class="header__active-menu-item"{% endif %}>{{ link.title | escape }}</span>
                         {% render 'icon-caret' %}
                       </summary>
-                      <div id="MegaMenu-Content-{{ forloop.index }}" class="mega-menu__content gradient motion-reduce global-settings-popup" tabindex="-1">
-                        <ul class="mega-menu__list page-width{% if link.levels == 1 %} mega-menu__list--condensed{% endif %}" role="list">
+                      <div id="MegaMenu-Content-{{ forloop.index }}"
+                           class="mega-menu__content gradient motion-reduce global-settings-popup" tabindex="-1">
+                        <ul class="mega-menu__list page-width{% if link.levels == 1 %} mega-menu__list--condensed{% endif %}"
+                            role="list">
                           {%- for childlink in link.links -%}
                             <li>
-                              <a href="{{ childlink.url }}" class="mega-menu__link mega-menu__link--level-2 link{% if childlink.current %} mega-menu__link--active{% endif %}"{% if childlink.current %} aria-current="page"{% endif %}>
+                              <a href="{{ childlink.url }}"
+                                 class="mega-menu__link mega-menu__link--level-2 link{% if childlink.current %} mega-menu__link--active{% endif %}"{% if childlink.current %} aria-current="page"{% endif %}>
                                 {{ childlink.title | escape }}
                               </a>
                               {%- if childlink.links != blank -%}
                                 <ul class="list-unstyled" role="list">
                                   {%- for grandchildlink in childlink.links -%}
                                     <li>
-                                      <a href="{{ grandchildlink.url }}" class="mega-menu__link link{% if grandchildlink.current %} mega-menu__link--active{% endif %}"{% if grandchildlink.current %} aria-current="page"{% endif %}>
+                                      <a href="{{ grandchildlink.url }}"
+                                         class="mega-menu__link link{% if grandchildlink.current %} mega-menu__link--active{% endif %}"{% if grandchildlink.current %} aria-current="page"{% endif %}>
                                         {{ grandchildlink.title | escape }}
                                       </a>
                                     </li>
@@ -452,7 +470,8 @@
                     </details>
                   </header-menu>
                 {%- else -%}
-                  <a href="{{ link.url }}" class="header__menu-item header__menu-item list-menu__item link link--text focus-inset"{% if link.current %} aria-current="page"{% endif %}>
+                  <a href="{{ link.url }}"
+                     class="header__menu-item header__menu-item list-menu__item link link--text focus-inset"{% if link.current %} aria-current="page"{% endif %}>
                     <span {%- if link.current %} class="header__active-menu-item"{% endif %}>{{ link.title | escape }}</span>
                   </a>
                 {%- endif -%}
@@ -466,7 +485,8 @@
     <div class="header__icons">
       <details-modal class="header__search">
         <details>
-          <summary class="header__icon header__icon--search header__icon--summary link focus-inset modal__toggle" aria-haspopup="dialog" aria-label="{{ 'general.search.search' | t }}">
+          <summary class="header__icon header__icon--search header__icon--summary link focus-inset modal__toggle"
+                   aria-haspopup="dialog" aria-label="{{ 'general.search.search' | t }}">
             <span>
               <svg class="modal__toggle-open icon icon-search" aria-hidden="true" focusable="false" role="presentation">
                 <use href="#icon-search">
@@ -476,32 +496,34 @@
               </svg>
             </span>
           </summary>
-          <div class="search-modal modal__content gradient" role="dialog" aria-modal="true" aria-label="{{ 'general.search.search' | t }}">
+          <div class="search-modal modal__content gradient" role="dialog" aria-modal="true"
+               aria-label="{{ 'general.search.search' | t }}">
             <div class="modal-overlay"></div>
-            <div class="search-modal__content{% if settings.inputs_shadow_vertical_offset != 0 and settings.inputs_shadow_vertical_offset < 0 %} search-modal__content-top{% else %} search-modal__content-bottom{% endif %}" tabindex="-1">
-              {%- if settings.predictive_search_enabled -%}
-                <predictive-search class="search-modal__form" data-loading-text="{{ 'accessibility.loading' | t }}">
-              {%- endif -%}
+            <div class="search-modal__content{% if settings.inputs_shadow_vertical_offset != 0 and settings.inputs_shadow_vertical_offset < 0 %} search-modal__content-top{% else %} search-modal__content-bottom{% endif %}"
+                 tabindex="-1">
+            {%- if settings.predictive_search_enabled -%}
+              <predictive-search class="search-modal__form" data-loading-text="{{ 'accessibility.loading' | t }}">
+                {%- endif -%}
                 <form action="{{ routes.search_url }}" method="get" role="search" class="search search-modal__form">
                   <div class="field">
                     <input class="search__input field__input"
-                      id="Search-In-Modal"
-                      type="search"
-                      name="q"
-                      value=""
-                      placeholder="{{ 'general.search.search' | t }}"
-                      {%- if settings.predictive_search_enabled -%}
-                        role="combobox"
-                        aria-expanded="false"
-                        aria-owns="predictive-search-results-list"
-                        aria-controls="predictive-search-results-list"
-                        aria-haspopup="listbox"
-                        aria-autocomplete="list"
-                        autocorrect="off"
-                        autocomplete="off"
-                        autocapitalize="off"
-                        spellcheck="false"
-                      {%- endif -%}
+                           id="Search-In-Modal"
+                           type="search"
+                           name="q"
+                           value=""
+                           placeholder="{{ 'general.search.search' | t }}"
+                            {%- if settings.predictive_search_enabled -%}
+                              role="combobox"
+                              aria-expanded="false"
+                              aria-owns="predictive-search-results-list"
+                              aria-controls="predictive-search-results-list"
+                              aria-haspopup="listbox"
+                              aria-autocomplete="list"
+                              autocorrect="off"
+                              autocomplete="off"
+                              autocapitalize="off"
+                              spellcheck="false"
+                            {%- endif -%}
                     >
                     <label class="field__label" for="Search-In-Modal">{{ 'general.search.search' | t }}</label>
                     <input type="hidden" name="options[prefix]" value="last">
@@ -515,7 +537,8 @@
                   {%- if settings.predictive_search_enabled -%}
                     <div class="predictive-search predictive-search--header" tabindex="-1" data-predictive-search>
                       <div class="predictive-search__loading-state">
-                        <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                        <svg aria-hidden="true" focusable="false" role="presentation" class="spinner"
+                             viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
                           <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
                         </svg>
                       </div>
@@ -524,10 +547,11 @@
                     <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
                   {%- endif -%}
                 </form>
-              {%- if settings.predictive_search_enabled -%}
-                </predictive-search>
+                {%- if settings.predictive_search_enabled -%}
+              </predictive-search>
               {%- endif -%}
-              <button type="button" class="search-modal__close-button modal__close-button link link--text focus-inset" aria-label="{{ 'accessibility.close' | t }}">
+              <button type="button" class="search-modal__close-button modal__close-button link link--text focus-inset"
+                      aria-label="{{ 'accessibility.close' | t }}">
                 <svg class="icon icon-close" aria-hidden="true" focusable="false" role="presentation">
                   <use href="#icon-close">
                 </svg>
@@ -538,7 +562,8 @@
       </details-modal>
 
       {%- if shop.customer_accounts_enabled -%}
-        <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="header__icon header__icon--account link focus-inset{% if section.settings.menu != blank %} small-hide{% endif %}">
+        <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
+           class="header__icon header__icon--account link focus-inset{% if section.settings.menu != blank %} small-hide{% endif %}">
           {% render 'icon-account' %}
           <span class="visually-hidden">
             {%- liquid
@@ -578,97 +603,97 @@
 
 {% javascript %}
   class StickyHeader extends HTMLElement {
-    constructor() {
-      super();
-    }
+  constructor() {
+  super();
+  }
 
-    connectedCallback() {
-      this.header = document.getElementById('shopify-section-header');
-      this.headerBounds = {};
-      this.currentScrollTop = 0;
-      this.preventReveal = false;
-      this.predictiveSearch = this.querySelector('predictive-search');
+  connectedCallback() {
+  this.header = document.getElementById('shopify-section-header');
+  this.headerBounds = {};
+  this.currentScrollTop = 0;
+  this.preventReveal = false;
+  this.predictiveSearch = this.querySelector('predictive-search');
 
-      this.onScrollHandler = this.onScroll.bind(this);
-      this.hideHeaderOnScrollUp = () => this.preventReveal = true;
+  this.onScrollHandler = this.onScroll.bind(this);
+  this.hideHeaderOnScrollUp = () => this.preventReveal = true;
 
-      this.addEventListener('preventHeaderReveal', this.hideHeaderOnScrollUp);
-      window.addEventListener('scroll', this.onScrollHandler, false);
+  this.addEventListener('preventHeaderReveal', this.hideHeaderOnScrollUp);
+  window.addEventListener('scroll', this.onScrollHandler, false);
 
-      this.createObserver();
-    }
+  this.createObserver();
+  }
 
-    disconnectedCallback() {
-      this.removeEventListener('preventHeaderReveal', this.hideHeaderOnScrollUp);
-      window.removeEventListener('scroll', this.onScrollHandler);
-    }
+  disconnectedCallback() {
+  this.removeEventListener('preventHeaderReveal', this.hideHeaderOnScrollUp);
+  window.removeEventListener('scroll', this.onScrollHandler);
+  }
 
-    createObserver() {
-      let observer = new IntersectionObserver((entries, observer) => {
-        this.headerBounds = entries[0].intersectionRect;
-        observer.disconnect();
-      });
+  createObserver() {
+  let observer = new IntersectionObserver((entries, observer) => {
+  this.headerBounds = entries[0].intersectionRect;
+  observer.disconnect();
+  });
 
-      observer.observe(this.header);
-    }
+  observer.observe(this.header);
+  }
 
-    onScroll() {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  onScroll() {
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-      if (this.predictiveSearch && this.predictiveSearch.isOpen) return;
+  if (this.predictiveSearch && this.predictiveSearch.isOpen) return;
 
-      if (scrollTop > this.currentScrollTop && scrollTop > this.headerBounds.bottom) {
-        if (this.preventHide) return;
-        requestAnimationFrame(this.hide.bind(this));
-      } else if (scrollTop < this.currentScrollTop && scrollTop > this.headerBounds.bottom) {
-        if (!this.preventReveal) {
-          requestAnimationFrame(this.reveal.bind(this));
-        } else {
-          window.clearTimeout(this.isScrolling);
+  if (scrollTop > this.currentScrollTop && scrollTop > this.headerBounds.bottom) {
+  if (this.preventHide) return;
+  requestAnimationFrame(this.hide.bind(this));
+  } else if (scrollTop < this.currentScrollTop && scrollTop > this.headerBounds.bottom) {
+  if (!this.preventReveal) {
+  requestAnimationFrame(this.reveal.bind(this));
+  } else {
+  window.clearTimeout(this.isScrolling);
 
-          this.isScrolling = setTimeout(() => {
-            this.preventReveal = false;
-          }, 66);
+  this.isScrolling = setTimeout(() => {
+  this.preventReveal = false;
+  }, 66);
 
-          requestAnimationFrame(this.hide.bind(this));
-        }
-      } else if (scrollTop <= this.headerBounds.top) {
-        requestAnimationFrame(this.reset.bind(this));
-      }
+  requestAnimationFrame(this.hide.bind(this));
+  }
+  } else if (scrollTop <= this.headerBounds.top) {
+  requestAnimationFrame(this.reset.bind(this));
+  }
 
-      this.currentScrollTop = scrollTop;
-    }
+  this.currentScrollTop = scrollTop;
+  }
 
-    hide() {
-      this.header.classList.add('shopify-section-header-hidden', 'shopify-section-header-sticky');
-      this.closeMenuDisclosure();
-      this.closeSearchModal();
-    }
+  hide() {
+  this.header.classList.add('shopify-section-header-hidden', 'shopify-section-header-sticky');
+  this.closeMenuDisclosure();
+  this.closeSearchModal();
+  }
 
-    reveal() {
-      this.header.classList.add('shopify-section-header-sticky', 'animate');
-      this.header.classList.remove('shopify-section-header-hidden');
-    }
+  reveal() {
+  this.header.classList.add('shopify-section-header-sticky', 'animate');
+  this.header.classList.remove('shopify-section-header-hidden');
+  }
 
-    reset() {
-      this.header.classList.remove('shopify-section-header-hidden', 'shopify-section-header-sticky', 'animate');
-    }
+  reset() {
+  this.header.classList.remove('shopify-section-header-hidden', 'shopify-section-header-sticky', 'animate');
+  }
 
-    closeMenuDisclosure() {
-      this.disclosures = this.disclosures || this.header.querySelectorAll('header-menu');
-      this.disclosures.forEach(disclosure => disclosure.close());
-    }
+  closeMenuDisclosure() {
+  this.disclosures = this.disclosures || this.header.querySelectorAll('header-menu');
+  this.disclosures.forEach(disclosure => disclosure.close());
+  }
 
-    closeSearchModal() {
-      this.searchModal = this.searchModal || this.header.querySelector('details-modal');
-      this.searchModal.close(false);
-    }
+  closeSearchModal() {
+  this.searchModal = this.searchModal || this.header.querySelector('details-modal');
+  this.searchModal.close(false);
+  }
   }
 
   customElements.define('sticky-header', StickyHeader);
 {% endjavascript %}
 
-<script type="application/ld+json">
+  <script type="application/ld+json">
   {
     "@context": "http://schema.org",
     "@type": "Organization",
@@ -677,23 +702,24 @@
       "logo": {{ section.settings.logo | image_url: width: section.settings.logo.width | prepend: "https:" | json }},
     {% endif %}
     "sameAs": [
-      {{ settings.social_twitter_link | json }},
-      {{ settings.social_facebook_link | json }},
-      {{ settings.social_pinterest_link | json }},
-      {{ settings.social_instagram_link | json }},
-      {{ settings.social_tiktok_link | json }},
-      {{ settings.social_tumblr_link | json }},
-      {{ settings.social_snapchat_link | json }},
-      {{ settings.social_youtube_link | json }},
+      {{ settings.social_twitter_link | json }}
+      {{ settings.social_facebook_link | json }}
+      {{ settings.social_pinterest_link | json }}
+      {{ settings.social_instagram_link | json }}
+      {{ settings.social_tiktok_link | json }}
+      {{ settings.social_tumblr_link | json }}
+      {{ settings.social_snapchat_link | json }}
+      {{ settings.social_youtube_link | json }}
       {{ settings.social_vimeo_link | json }}
     ],
     "url": {{ request.origin | append: page.url | json }}
   }
-</script>
 
-{%- if request.page_type == 'index' -%}
-  {% assign potential_action_target = request.origin | append: routes.search_url | append: "?q={search_term_string}" %}
-  <script type="application/ld+json">
+  </script>
+
+  {%- if request.page_type == 'index' -%}
+    {% assign potential_action_target = request.origin | append: routes.search_url | append: "?q={search_term_string}" %}
+    <script type="application/ld+json">
     {
       "@context": "http://schema.org",
       "@type": "WebSite",
@@ -705,128 +731,129 @@
       },
       "url": {{ request.origin | append: page.url | json }}
     }
-  </script>
-{%- endif -%}
+
+    </script>
+  {%- endif -%}
 
 {% schema %}
-{
+  {
   "name": "t:sections.header.name",
   "class": "section-header",
   "settings": [
-    {
-      "type": "select",
-      "id": "color_scheme",
-      "options": [
-        {
-          "value": "accent-1",
-          "label": "t:sections.all.colors.accent_1.label"
-        },
-        {
-          "value": "accent-2",
-          "label": "t:sections.all.colors.accent_2.label"
-        },
-        {
-          "value": "background-1",
-          "label": "t:sections.all.colors.background_1.label"
-        },
-        {
-          "value": "background-2",
-          "label": "t:sections.all.colors.background_2.label"
-        },
-        {
-          "value": "inverse",
-          "label": "t:sections.all.colors.inverse.label"
-        }
-      ],
-      "default": "background-1",
-      "label": "t:sections.all.colors.label"
-    },
-    {
-      "type": "image_picker",
-      "id": "logo",
-      "label": "t:sections.header.settings.logo.label"
-    },
-    {
-      "type": "range",
-      "id": "logo_width",
-      "min": 50,
-      "max": 250,
-      "step": 10,
-      "default": 100,
-      "unit": "t:sections.header.settings.logo_width.unit",
-      "label": "t:sections.header.settings.logo_width.label"
-    },
-    {
-      "type": "select",
-      "id": "logo_position",
-      "options": [
-        {
-          "value": "middle-left",
-          "label": "t:sections.header.settings.logo_position.options__1.label"
-        },
-        {
-          "value": "top-left",
-          "label": "t:sections.header.settings.logo_position.options__2.label"
-        },
-        {
-          "value": "top-center",
-          "label": "t:sections.header.settings.logo_position.options__3.label"
-        }
-      ],
-      "default": "middle-left",
-      "label": "t:sections.header.settings.logo_position.label",
-      "info": "t:sections.header.settings.logo_position.info"
-    },
-    {
-      "type": "link_list",
-      "id": "menu",
-      "default": "main-menu",
-      "label": "t:sections.header.settings.menu.label"
-    },
-    {
-      "type": "select",
-      "id": "menu_type_desktop",
-      "options": [
-        {
-          "value": "dropdown",
-          "label": "t:sections.header.settings.menu_type_desktop.options__1.label"
-        },
-        {
-          "value": "mega",
-          "label": "t:sections.header.settings.menu_type_desktop.options__2.label"
-        }
-      ],
-      "default": "dropdown",
-      "label": "t:sections.header.settings.menu_type_desktop.label",
-      "info": "t:sections.header.settings.menu_type_desktop.info"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_line_separator",
-      "default": true,
-      "label": "t:sections.header.settings.show_line_separator.label"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_sticky_header",
-      "default": true,
-      "label": "t:sections.header.settings.enable_sticky_header.label",
-      "info": "t:sections.header.settings.enable_sticky_header.info"
-    },
-    {
-      "type": "header",
-      "content": "t:sections.all.spacing"
-    },
-    {
-      "type": "range",
-      "id": "margin_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "t:sections.header.settings.margin_bottom.label",
-      "default": 0
-    }
+  {
+  "type": "select",
+  "id": "color_scheme",
+  "options": [
+  {
+  "value": "accent-1",
+  "label": "t:sections.all.colors.accent_1.label"
+  },
+  {
+  "value": "accent-2",
+  "label": "t:sections.all.colors.accent_2.label"
+  },
+  {
+  "value": "background-1",
+  "label": "t:sections.all.colors.background_1.label"
+  },
+  {
+  "value": "background-2",
+  "label": "t:sections.all.colors.background_2.label"
+  },
+  {
+  "value": "inverse",
+  "label": "t:sections.all.colors.inverse.label"
+  }
+  ],
+  "default": "background-1",
+  "label": "t:sections.all.colors.label"
+  },
+  {
+  "type": "image_picker",
+  "id": "logo",
+  "label": "t:sections.header.settings.logo.label"
+  },
+  {
+  "type": "range",
+  "id": "logo_width",
+  "min": 50,
+  "max": 250,
+  "step": 10,
+  "default": 100,
+  "unit": "t:sections.header.settings.logo_width.unit",
+  "label": "t:sections.header.settings.logo_width.label"
+  },
+  {
+  "type": "select",
+  "id": "logo_position",
+  "options": [
+  {
+  "value": "middle-left",
+  "label": "t:sections.header.settings.logo_position.options__1.label"
+  },
+  {
+  "value": "top-left",
+  "label": "t:sections.header.settings.logo_position.options__2.label"
+  },
+  {
+  "value": "top-center",
+  "label": "t:sections.header.settings.logo_position.options__3.label"
+  }
+  ],
+  "default": "middle-left",
+  "label": "t:sections.header.settings.logo_position.label",
+  "info": "t:sections.header.settings.logo_position.info"
+  },
+  {
+  "type": "link_list",
+  "id": "menu",
+  "default": "main-menu",
+  "label": "t:sections.header.settings.menu.label"
+  },
+  {
+  "type": "select",
+  "id": "menu_type_desktop",
+  "options": [
+  {
+  "value": "dropdown",
+  "label": "t:sections.header.settings.menu_type_desktop.options__1.label"
+  },
+  {
+  "value": "mega",
+  "label": "t:sections.header.settings.menu_type_desktop.options__2.label"
+  }
+  ],
+  "default": "dropdown",
+  "label": "t:sections.header.settings.menu_type_desktop.label",
+  "info": "t:sections.header.settings.menu_type_desktop.info"
+  },
+  {
+  "type": "checkbox",
+  "id": "show_line_separator",
+  "default": true,
+  "label": "t:sections.header.settings.show_line_separator.label"
+  },
+  {
+  "type": "checkbox",
+  "id": "enable_sticky_header",
+  "default": true,
+  "label": "t:sections.header.settings.enable_sticky_header.label",
+  "info": "t:sections.header.settings.enable_sticky_header.info"
+  },
+  {
+  "type": "header",
+  "content": "t:sections.all.spacing"
+  },
+  {
+  "type": "range",
+  "id": "margin_bottom",
+  "min": 0,
+  "max": 100,
+  "step": 4,
+  "unit": "px",
+  "label": "t:sections.header.settings.margin_bottom.label",
+  "default": 0
+  }
   ]
-}
+  }
 {% endschema %}
