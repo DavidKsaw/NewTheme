@@ -349,11 +349,11 @@
           {% comment %}{% capture image_size %}{{ section.settings.logo_max_width | escape }}{% endcapture %}{% endcomment %}
           {% comment %}<img src="{{ 'logo.svg' | asset_url }}" alt="{{ shop.name }}" style="max-width: {{ image_size }}px;">{% endcomment %}
 
-          <a href="{{ routes.root_url }}" class="site-header__logo-image{% if section.settings.align_logo == 'center' %} site-header__logo-image--centered{% endif %}">
+          <a href="{{ routes.root_url }}" class="site-header__logo-image{%- if section.settings.align_logo != blank -%} site-header__logo-image--centered{% endif %}">
               {% capture image_size %}{{ section.settings.logo_max_width | escape }}{% endcapture %}
               <img src="{{ 'logo.svg' | asset_url }}"
                    alt="{{ shop.name }}"
-                   style="max-width: {{ image_size }}px;">
+                   style="max-width: 200px;">
           </a>
 
 
