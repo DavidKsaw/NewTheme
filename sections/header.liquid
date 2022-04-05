@@ -345,31 +345,22 @@
     {%- if request.page_type == 'index' -%}
       <h1 class="header__heading">
     {%- endif -%}
-        <a href="{{ routes.root_url }}" class="site-header_logo-image {% if section.settings.align_logo == 'center' %}site-header_logo-image--centered {% endif %}">
+        {% comment %}<a href="{{ routes.root_url }}" class="site-header_logo-image {% if section.settings.align_logo == 'center' %}site-header_logo-image--centered {% endif %}">{% endcomment %}
+          {% comment %}{% capture image_size %}{{ section.settings.logo_max_width | escape }}{% endcapture %}{% endcomment %}
+          {% comment %}<img src="{{ 'logo.svg' | asset_url }}" alt="{{ shop.name }}" style="max-width: {{ image_size }}px;">{% endcomment %}
 
-          {% capture image_size %}{{ section.settings.logo_max_width | escape }}{% endcapture %}
-          <img src="{{ 'logo.svg' | asset_url }}"
-          alt="{{ shop.name }}"
-          style="max-width: {{ image_size }}px;">
+          <a href="{{ routes.root_url }}" class="site-header__logo-image{% if section.settings.align_logo == 'center' %} site-header__logo-image--centered{% endif %}">
+              {% capture image_size %}{{ section.settings.logo_max_width | escape }}{% endcapture %}
+              <img src="{{ 'logo.svg' | asset_url }}"
+                   alt="{{ shop.name }}"
+                   style="max-width: {{ image_size }}px;">
+          </a>
 
 
-          {% comment %}{%- if section.settings.logo != blank -%}{% endcomment %}
-          {% comment %}{%- assign image_size_2x = section.settings.logo_width | times: 2 | at_most: 5760 -%}{% endcomment %}
-          {% comment %}<img srcset="{{ section.settings.logo | image_url: width: section.settings.logo_width }} 1x, {{ section.settings.logo | image_url: width: image_size_2x }} 2x"{% endcomment %}
-          {% comment %}src="{{ section.settings.logo | image_url: width: section.settings.logo_width }}"{% endcomment %}
-          {% comment %}loading="lazy"{% endcomment %}
-          {% comment %}class="header__heading-logo"{% endcomment %}
-          {% comment %}width="{{ section.settings.logo.width }}"{% endcomment %}
-          {% comment %}height="{{ section.settings.logo.height }}"{% endcomment %}
-          {% comment %}alt="{{ section.settings.logo.alt | default: shop.name | escape }}"{% endcomment %}
-          {% comment %}>{% endcomment %}
-          {% comment %}{%- else -%}{% endcomment %}
-          {% comment %}<span class="h2">{{ shop.name }}</span>{% endcomment %}
-          {% comment %}{%- endif -%}{% endcomment %}
-        </a>
-        {%- if request.page_type == 'index' -%}
-      </h1>
-    {%- endif -%}
+
+      {%- if request.page_type == 'index' -%}
+          </h1>
+      {%- endif -%}
 
     {%- if section.settings.menu != blank -%}
       {%- if section.settings.menu_type_desktop == 'dropdown' -%}
